@@ -146,11 +146,12 @@ export function Button({
         accessibilityRole="button"
         {...props}
       >
-        {typeof children === "string" ? (
-          <Text style={textStyleArray}>{children}</Text>
-        ) : (
-          children
-        )}
+        {React.Children.map(children, (child) => {
+          if (typeof child === "string") {
+            return <Text style={textStyleArray}>{child}</Text>;
+          }
+          return child;
+        })}
       </TouchableOpacity>
     );
   }
@@ -163,11 +164,12 @@ export function Button({
       activeOpacity={0.7}
       {...props}
     >
-      {typeof children === "string" ? (
-        <Text style={textStyleArray}>{children}</Text>
-      ) : (
-        children
-      )}
+      {React.Children.map(children, (child) => {
+        if (typeof child === "string") {
+          return <Text style={textStyleArray}>{child}</Text>;
+        }
+        return child;
+      })}
     </TouchableOpacity>
   );
 }

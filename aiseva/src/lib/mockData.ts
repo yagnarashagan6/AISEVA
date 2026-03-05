@@ -12,6 +12,7 @@ export interface Scheme {
   requiredDocuments: string[];
   instructions: string[];
   isEligible?: boolean;
+  isHidden?: boolean;
   deadline?: string;
 }
 
@@ -60,7 +61,7 @@ export interface Notification {
   read: boolean;
 }
 
-export const mockSchemes: Scheme[] = [
+export let mockSchemes: Scheme[] = [
   {
     id: "1",
     title: "PM Kisan Samman Nidhi",
@@ -259,6 +260,24 @@ export const mockSchemes: Scheme[] = [
     isEligible: true,
   },
 ];
+
+export function deleteMockScheme(id: string) {
+  const index = mockSchemes.findIndex((s) => s.id === id);
+  if (index !== -1) {
+    mockSchemes.splice(index, 1);
+  }
+}
+
+export function updateMockScheme(updatedScheme: Scheme) {
+  const index = mockSchemes.findIndex((s) => s.id === updatedScheme.id);
+  if (index !== -1) {
+    mockSchemes[index] = updatedScheme;
+  }
+}
+
+export function addMockScheme(scheme: Scheme) {
+  mockSchemes.push(scheme);
+}
 
 export const defaultUserProfile: UserProfile = {
   personalDetails: {

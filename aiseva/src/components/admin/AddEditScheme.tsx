@@ -1,15 +1,6 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  ScrollView,
-  StyleSheet,
-  SafeAreaView,
-  Alert,
-  TouchableOpacity,
-  KeyboardAvoidingView,
-  Platform,
-} from "react-native";
+import { View, Text, ScrollView, StyleSheet, Alert, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
@@ -20,7 +11,7 @@ import { AntDesign } from "@expo/vector-icons";
 interface AddEditSchemeProps {
   scheme?: any;
   onBack: () => void;
-  onSave: () => void;
+  onSave: (data?: any) => void;
 }
 
 const styles = StyleSheet.create({
@@ -213,9 +204,9 @@ export default function AddEditScheme({
       [
         {
           text: "OK",
-          onPress: onSave,
+          onPress: () => onSave(formData),
         },
-      ]
+      ],
     );
   };
 

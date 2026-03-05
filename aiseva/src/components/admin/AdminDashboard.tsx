@@ -4,12 +4,16 @@ import {
   Text,
   ScrollView,
   StyleSheet,
-  SafeAreaView,
   Alert,
   TouchableOpacity,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { Button } from "../ui/button";
-import { mockSchemes } from "../../lib/mockData";
+import {
+  mockSchemes,
+  deleteMockScheme,
+  updateMockScheme,
+} from "../../lib/mockData";
 import { AntDesign } from "@expo/vector-icons";
 
 interface AdminDashboardProps {
@@ -172,11 +176,20 @@ export default function AdminDashboard({
           text: "Delete",
           style: "destructive",
           onPress: () => {
-            setSchemes(schemes.filter((s) => s.id !== id));
+            deleteMockScheme(id);
+            setSchemes([...mockSchemes]);
           },
         },
-      ]
+      ],
     );
+  };
+
+  const handleToggleVisibility = (id: string) => {
+    const scheme = schemes.find((s) => s.id === id);
+    if (scheme) {
+      updateMockScheme({ ...scheme, isHidden: !scheme.isHidden });
+      setSchemes([...mockSchemes]);
+    }
   };
 
   const handleEdit = (id: string) => {
@@ -264,6 +277,16 @@ export default function AdminDashboard({
                       {scheme.title}
                     </Text>
                     <View style={styles.schemeActions}>
+                      <TouchableOpacity
+                        onPress={() => handleToggleVisibility(scheme.id)}
+                        style={{ padding: 4 }}
+                      >
+                        <AntDesign
+                          name={scheme.isHidden ? "eye" : "eye"}
+                          size={16}
+                          color={scheme.isHidden ? "#9CA3AF" : "#3B82F6"}
+                        />
+                      </TouchableOpacity>
                       <TouchableOpacity
                         onPress={() => handleEdit(scheme.id)}
                         style={{ padding: 4 }}

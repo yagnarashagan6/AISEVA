@@ -3,10 +3,10 @@ import {
   View,
   Text,
   StyleSheet,
-  SafeAreaView,
   Alert,
   ActivityIndicator,
 } from "react-native";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // Auth Components
@@ -85,7 +85,7 @@ export default function App() {
         const parsedUser = JSON.parse(userData);
         setUser(parsedUser);
         setCurrentScreen(
-          parsedUser.role === "admin" ? "AdminDashboard" : "UserDashboard"
+          parsedUser.role === "admin" ? "AdminDashboard" : "UserDashboard",
         );
       }
     } catch (error) {
@@ -108,7 +108,7 @@ export default function App() {
       await AsyncStorage.setItem("user", JSON.stringify(userData));
       setUser(userData);
       setCurrentScreen(
-        userData.role === "admin" ? "AdminDashboard" : "UserDashboard"
+        userData.role === "admin" ? "AdminDashboard" : "UserDashboard",
       );
 
       Alert.alert("Success", "Login successful!");
@@ -121,7 +121,7 @@ export default function App() {
   const handleSignup = async (
     email: string,
     password: string,
-    name: string
+    name: string,
   ) => {
     try {
       // Mock signup logic
@@ -185,7 +185,7 @@ export default function App() {
     Alert.alert(
       "Application Submitted",
       `Your application has been submitted with ID: ${applicationId}`,
-      [{ text: "OK", onPress: () => setCurrentScreen("UserDashboard") }]
+      [{ text: "OK", onPress: () => setCurrentScreen("UserDashboard") }],
     );
   };
 
@@ -194,10 +194,9 @@ export default function App() {
     setCurrentScreen("AddEditScheme");
   };
 
-  const handleSchemeSave = () => {
+  const handleSchemeSave = (data?: any) => {
     setEditingScheme(null);
     setCurrentScreen("AdminDashboard");
-    Alert.alert("Success", "Scheme saved successfully!");
   };
 
   if (isLoading) {
@@ -323,8 +322,10 @@ export default function App() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      {renderCurrentScreen()}
-    </SafeAreaView>
+    <SafeAreaProvider>
+      <SafeAreaView style={styles.container}>
+        {renderCurrentScreen()}
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 }
